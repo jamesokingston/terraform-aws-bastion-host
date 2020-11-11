@@ -1,3 +1,7 @@
+locals {
+  component_prefix = "${var.environment}-${var.project}-jump"
+}
+
 resource "aws_instance" "server" {
   ami                         = local.ami_id
   instance_type               = local.instance_type
@@ -16,8 +20,11 @@ resource "aws_instance" "server" {
   }
 
   tags = {
-    Name    = "Bastion host"
-    Project = local.project
+    Name    = local.component_prefix
+    BuiltBy     = "Terraform"
+    BuildModule = "terraform-aws-bastion-host"
+    Environment = var.environment
+    Project     = var.project
   }
 }
 
